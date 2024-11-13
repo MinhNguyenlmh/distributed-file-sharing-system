@@ -1,0 +1,35 @@
+{
+    "minh": {
+        "password": "12345",
+        "files": [
+            "Ph\u00c3\u00a1t tri\u00e1\u00bb\u0192n \u00e1\u00bb\u00a9ng d\u00e1\u00bb\u00a5ng v\u00e1\u00bb\u203ai Streamlit-1.pdf",
+            "\u0110\u1ec1 Ki\u1ec3m Tra Gi\u1eefa K\u1ef3 - Draft 01 - KO \u0110\u00c1P \u00c1N.pdf",
+            "\u1ea2nh ch\u1ee5p m\u00e0n h\u00ecnh 2023-03-20 112047.png"
+        ],
+        "public_files": [
+            "file_c\u00c3\u00b4ng_khai.pdf",
+            "Cambridge_Practice_Test_for_IELTS_12_664abd58db.pdf",
+            "\u1ea2nh ch\u1ee5p m\u00e0n h\u00ecnh 2023-03-20 112047.png"
+        ]
+    },
+    "binh": {
+        "password": "12345",
+        "files": [
+            "Phenikaa_DistributedSystem_Y24_Slides_Lec2.pdf",
+            "SampleFinal_06_EC2.pdf"
+        ],
+        "public_files": [
+            "Phenikaa_DistributedSystem_Y24_Slides_Lec2.pdf",
+            "SampleFinal_06_EC2.pdf"
+        ]
+    },
+    "linh": {
+        "password": "12345",
+        "files": [
+            "Phenikaa_FinalExam_UDPT_01.pdf"
+        ],
+        "public_files": [
+            "Phenikaa_FinalExam_UDPT_01.pdf"
+        ]
+    }
+}
