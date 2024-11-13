@@ -1,60 +1,80 @@
 import streamlit as st
 import os
+import json
 
-UPLOAD_FOLDER = 'uploads/public/'  # Định nghĩa đúng thư mục
+# Đường dẫn đến thư mục chứa các tệp công khai
+PUBLIC_FOLDER = 'uploads/public/'
 
+# Đảm bảo thư mục công khai tồn tại
+if not os.path.exists(PUBLIC_FOLDER):
+    os.makedirs(PUBLIC_FOLDER)
+
+# Đọc dữ liệu từ tệp JSON chứa thông tin người dùng
+def load_user_data():
+    try:
+        with open('users.json', 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {}
+
+# Hiển thị tệp công khai
 def public_files_view():
     st.header("Tệp công khai")
 
-    # Lấy tất cả các tệp trong thư mục uploads/public
-    files = os.listdir(UPLOAD_FOLDER)  # Sử dụng đúng biến UPLOAD_FOLDER
+    # Lấy danh sách các tệp công khai từ thư mục
+    public_files = os.listdir(PUBLIC_FOLDER)
 
-    if files:
-        for file_name in files:
-            file_path = os.path.join(UPLOAD_FOLDER, file_name)
+    # Lấy dữ liệu người dùng từ users.json
+    users_data = load_user_data()
 
-            # Kiểm tra nếu file_path là thư mục, nếu là thì bỏ qua
-            if os.path.isdir(file_path):
-                continue
+    if not public_files:
+        st.info("Không có tệp công khai.")
+        return
 
-            st.subheader(f"File: {file_name}")
+    # Duyệt qua từng tệp công khai
+    for file_name in public_files:
+        file_path = os.path.join(PUBLIC_FOLDER, file_name)
 
-            # Hiển thị ảnh nếu tệp là ảnh
-            if file_name.lower().endswith(('png', 'jpg', 'jpeg')):
-                col1, col2, col3 = st.columns([3, 1, 1])  # Chia cột cho ảnh và nút
-                with col1:
-                    st.image(file_path, caption=file_name, use_column_width=False, width=100)  # Điều chỉnh kích thước ảnh
-                with col2:
-                    # Nút tải xuống cho ảnh
-                    with open(file_path, "rb") as f:
-                        st.download_button(
-                            label="Tải xuống",
-                            data=f,
-                            file_name=file_name,
-                            mime="application/octet-stream"
-                        )
-                with col3:
-                    # Nút xóa (chỉ có thể xóa tệp công khai nếu người dùng có quyền)
-                    if st.button(f"Xóa {file_name}"):
-                        os.remove(file_path)
-                        st.success(f"Tệp {file_name} đã được xóa.")
-            else:
-                col1, col2, col3 = st.columns([3, 1, 1])  # Chia cột cho tệp không phải ảnh
-                with col1:
-                    st.write(file_name)
-                with col2:
-                    # Nút tải xuống
-                    with open(file_path, "rb") as f:
-                        st.download_button(
-                            label="Tải xuống",
-                            data=f,
-                            file_name=file_name,
-                            mime="application/octet-stream"
-                        )
-                with col3:
-                    # Nút xóa (chỉ có thể xóa tệp công khai nếu người dùng có quyền)
-                    if st.button(f"Xóa {file_name}"):
-                        os.remove(file_path)
-                        st.success(f"Tệp {file_name} đã được xóa.")
-    else:
-        st.info("Không có tệp công khai nào.")
+        # Kiểm tra và lấy tên người dùng đã đăng tệp
+        uploaded_by = None
+        for user_name, user_data in users_data.items():
+            if file_name in user_data.get('public_files', []):
+                uploaded_by = user_name
+                break
+
+        # Nếu không tìm thấy người dùng đăng tệp, bỏ qua tệp này
+        if uploaded_by is None:
+            continue
+
+        # Hiển thị thông tin về tệp
+        st.subheader(f"Tệp công khai: {file_name}")
+        
+        col1, col2 = st.columns([3, 1])
+
+        # Hiển thị tên người dùng đã đăng tệp
+        with col1:
+            st.write(f"Được đăng lên bởi: {uploaded_by}")
+
+        # Hiển thị hình ảnh nếu là tệp hình ảnh
+        if file_name.lower().endswith(('png', 'jpg', 'jpeg')):
+            with col1:
+                st.image(file_path, caption=file_name, width=80)
+        else:
+            with col1:
+                st.write(file_name)
+
+        # Nút tải xuống
+        with open(file_path, "rb") as f:
+            with col2:
+                st.download_button(
+                    label="Tải xuống",
+                    data=f,
+                    file_name=file_name,
+                    mime="application/octet-stream"
+                )
+
+# Giả lập người dùng đang đăng nhập
+st.session_state['username'] = 'minh'  # Thay đổi theo cách bạn quản lý đăng nhập
+
+# Hiển thị các tệp công khai
+public_files_view()
