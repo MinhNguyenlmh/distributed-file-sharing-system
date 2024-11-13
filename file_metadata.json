@@ -1,0 +1,37 @@
+[
+    {
+        "file_name": "image1.png",
+        "user_id": "user123",
+        "public": true
+    },
+    {
+        "file_name": "document1.pdf",
+        "user_id": "user123",
+        "public": false
+    },
+    {
+        "file_name": "photo2.jpg",
+        "user_id": "user456",
+        "public": true
+    },
+    {
+        "file_name": "presentation.pptx",
+        "user_id": "user789",
+        "public": false
+    },
+    {
+        "file_name": "report.docx",
+        "user_id": "user123",
+        "public": true
+    },
+    {
+        "file_name": "image3.png",
+        "user_id": "user456",
+        "public": false
+    },
+    {
+        "file_name": "note.txt",
+        "user_id": "user789",
+        "public": true
+    }
+]
